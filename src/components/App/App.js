@@ -20,6 +20,8 @@ import {
     isErrorPokemonData
 } from "../../reducers/pokemonData";
 
+import PstrNav from '../PstrNav';
+
 // test component table
 const Table = (props) => {
     return (
@@ -88,6 +90,7 @@ export class App extends PureComponent{
                     { isFetching && <Loader size="70px" gap={4} color="fuchsia" /> }
                 </div>
                 <div>{pokemons.length ? <Table pokemons={pokemons}/> : null}</div>
+                <PstrNav/>
            </div>
                 
        
