@@ -10,10 +10,8 @@ import { getPokemonList } from "../reducers/pokemonList";
 
 function* fetchPokemonDataFlow(action) {
     try {
-      console.time('timer');
       const list = yield select(getPokemonList);
       const response = yield call(fetchPokemonData, list);
-      console.timeEnd('timer');
       yield put(fetchPokemonDataSuccess(response));
     } catch (error) {
       yield put(fetchPokemonDataFailure(error));

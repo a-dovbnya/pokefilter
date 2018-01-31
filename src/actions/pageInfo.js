@@ -4,7 +4,7 @@ const actions = createActions({
   PAGE_INFO: {
     POKEMON_COUNT: null,
     POKEMON_ON_PAGE: null,
-    CERRENT_PAGE: null
+    CURRENT_PAGE: null
   }
 });
 

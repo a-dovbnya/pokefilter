@@ -12,9 +12,9 @@ import { setPokemonCount } from "../actions/pageInfo";
 import { fetchPokemonList } from "../api";
 
 function* fetchPokemonListFlow(action) {
-    
+
     try {
-      const response = yield call(fetchPokemonList);
+      const response = yield call(fetchPokemonList, action.payload);
         
       yield put(fetchPokemonListSuccess(response[0].results));
       yield put(setPokemonCount(response[0].count));

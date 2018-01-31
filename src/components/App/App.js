@@ -4,6 +4,8 @@ import {connect} from "react-redux";
 
 //import { selectBtc, selectEth, selectOffset, fetchUserRequest } from "../../actions/currency";
 import { fetchPokemonListRequest, fetchPokemonListSuccess, fetchPokemonListFailure } from "../../actions/pokemonList";
+import { setCurrentPage } from "../../actions/pageInfo";
+
 import Loader from 'react-svg-spinner';
 import PstrNav from '../PstrNav';
 
@@ -18,6 +20,8 @@ import {
     isFetchingPokemonData,
     isErrorPokemonData
 } from "../../reducers/pokemonData";
+
+import { getCurrentPage } from "../../reducers/pageInfo";
 
 // test component table
 const Table = (props) => {
@@ -44,31 +48,32 @@ const Table = (props) => {
 export class App extends PureComponent{
 
     componentDidMount() {
-        /*const symbol = this.props.match.params.symbol;
-        if (symbol) {
-            this.props.selectBtc(symbol);
-        }
-        // Отправка запроса на получение данных пользователя
-        this.props.fetchUserRequest();*/
+
+       /*  const currentPage = this.props.match.params.id;
+        if( currentPage && currentPage !== this.props.currentPage ){
+            this.props.setCurrentPage(currentPage);
+        } */
     }
     componentWillReceiveProps(nextProps) {
-        /*const currentSymbol = this.props.match.params.symbol;
-        const nextSymbol = nextProps.match.params.symbol;
+        const currentPage = this.props.match.params.id;
+        const nexPage = nextProps.match.params.id;
 
-        if (currentSymbol !== nextSymbol ) {
-            if(nextSymbol !== undefined){
-                this.props.selectBtc(nextSymbol);
-            }
-        }*/
+        if( currentPage !== nexPage){
+            //console.log("currentPage = ", currentPage);
+            //this.props.setCurrentPage(currentPage);
+        }
     }
 
     selectPeriodHandler = (e) => {
         //this.props.selectOffset(e.target.name);
     }
     getPokemons = () => {
-        this.props.fetchPokemonListRequest();
+    
+        const currentPage = this.props.match.params.id;
+        console.log('id = ', currentPage);
+        console.log(this.props.fetchPokemonListRequest);
+        this.props.fetchPokemonListRequest(currentPage);
     }
-
 
     render(){
      
@@ -77,7 +82,6 @@ export class App extends PureComponent{
         console.log("APP RENDER");
         const isFetching = this.props.isFetchingPokemonList || this.props.isFetchingPokemonData;
 
-   
         let pokemons = this.props.pokemonData;
 
         return(
@@ -104,8 +108,10 @@ const mapStateToProps = state => ({
     pokemonData: getPokemonData(state),
     isFetchingPokemonData: isFetchingPokemonData(state),
     isErrorPokemonData: isErrorPokemonData(state),
+    currentPage: getCurrentPage(state)
 });
 const mapDispatchToProps = {
-    fetchPokemonListRequest
+    fetchPokemonListRequest,
+    setCurrentPage
 };
 export default connect(mapStateToProps, mapDispatchToProps)(App);
