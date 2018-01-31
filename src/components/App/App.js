@@ -5,8 +5,7 @@ import {connect} from "react-redux";
 //import { selectBtc, selectEth, selectOffset, fetchUserRequest } from "../../actions/currency";
 import { fetchPokemonListRequest, fetchPokemonListSuccess, fetchPokemonListFailure } from "../../actions/pokemonList";
 import Loader from 'react-svg-spinner';
-//import TradeOperations from "../TradeOperations";
-//import UserInfo from "../UserInfo";
+import PstrNav from '../PstrNav';
 
 import {
     getPokemonList,
@@ -19,8 +18,6 @@ import {
     isFetchingPokemonData,
     isErrorPokemonData
 } from "../../reducers/pokemonData";
-
-import PstrNav from '../PstrNav';
 
 // test component table
 const Table = (props) => {
@@ -37,7 +34,7 @@ const Table = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                {props.pokemons.map(el => <tr key={el.id}><td>#{el.id}</td><td>{el.name}</td><td><img src={el.sprites.front_default}/>
+                {props.pokemons.map(el => <tr key={el.id}><td>#{el.id}</td><td><b>{el.name}</b></td><td><img src={el.sprites.front_default}/>
 </td><td>{el.weight}</td><td>{el.height}</td></tr>)}
                 </tbody>
             </table>
@@ -76,6 +73,8 @@ export class App extends PureComponent{
     render(){
      
         console.log(this.props);
+
+        console.log("APP RENDER");
         const isFetching = this.props.isFetchingPokemonList || this.props.isFetchingPokemonData;
 
    
@@ -87,10 +86,10 @@ export class App extends PureComponent{
                     <button onClick={this.getPokemons}>Получить список покемонов</button>
                 </div>
                 <div>
-                    { isFetching && <Loader size="70px" gap={4} color="fuchsia" /> }
+                    { isFetching && <Loader size="70px" gap={4} color="green" /> }
                 </div>
                 <div>{pokemons.length ? <Table pokemons={pokemons}/> : null}</div>
-                <PstrNav/>
+                <PstrNav page={this.props.match.params.id}/>
            </div>
                 
        
