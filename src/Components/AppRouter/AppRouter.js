@@ -7,8 +7,8 @@ export class AppRouter extends Component {
     render(){
         return (
             <Switch>
-                <Route path="/" exact component={App}/>
-                <Route path="/page/:id" component={App}/>
+                <Route path="/" exact component={App} />
+                <Route path="/page/:id" component={App} />
                 <Redirect to="/" />
             </Switch>
         );

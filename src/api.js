@@ -22,6 +22,8 @@ const P = new Pokedex(options);
     });
 }*/
 export const fetchPokemonList = (offset) => {
+    console.log('offset = ', offset);
+    if(!offset) offset = 1;
     return P.resource([`/api/v2/pokemon/?limit=20&offset=${offset*20 - 20}`])
     .then((response) => {
       console.log(response);

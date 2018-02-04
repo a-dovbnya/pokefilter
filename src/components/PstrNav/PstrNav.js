@@ -18,6 +18,7 @@ export class PstrNav extends PureComponent{
 
         let pages = Math.ceil( this.props.pokemonCount/this.props.pokemonOnPage ); 
         let arr = [];
+        
         for(let i = 1; i <= pages; i++){
             arr.push(this.pageRender(i));
         }
@@ -34,4 +35,5 @@ const mapStateToProps = state => ({
     pokemonCount: getPokemonCount(state),
     pokemonOnPage: getPokemonOnPage(state)
 });
+
 export default connect(mapStateToProps, null)(PstrNav);

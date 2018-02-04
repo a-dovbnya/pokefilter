@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {connect} from "react-redux";
-
+import { browserHistory } from 'react-router';
 
 //import { selectBtc, selectEth, selectOffset, fetchUserRequest } from "../../actions/currency";
 import { fetchPokemonListRequest, fetchPokemonListSuccess, fetchPokemonListFailure } from "../../actions/pokemonList";
@@ -23,62 +23,43 @@ import {
 
 import { getCurrentPage } from "../../reducers/pageInfo";
 
-// test component table
-const Table = (props) => {
-    return (
-        <div>
-            <table border="1">
-                <thead>
-                    <tr>
-                        <td>id</td>
-                        <td>name</td>
-                        <td>image</td>
-                        <td>weight</td>
-                        <td>height</td>
-                    </tr>
-                </thead>
-                <tbody>
-                {props.pokemons.map(el => <tr key={el.id}><td>#{el.id}</td><td><b>{el.name}</b></td><td><img src={el.sprites.front_default}/>
-</td><td>{el.weight}</td><td>{el.height}</td></tr>)}
-                </tbody>
-            </table>
-        </div>
-    );
-}
+import { PokemonTable } from "../PokemonTable/PokemonTable";
+//import Pagination from "react-js-pagination";
+import ReactPaginate from 'react-paginate';
+
+
+
 export class App extends PureComponent{
 
     componentDidMount() {
-
-       /*  const currentPage = this.props.match.params.id;
-        if( currentPage && currentPage !== this.props.currentPage ){
-            this.props.setCurrentPage(currentPage);
-        } */
+       console.log('component did mount');
+       const currentPage = this.props.match.params.id;
+       this.props.fetchPokemonListRequest(currentPage);
     }
     componentWillReceiveProps(nextProps) {
+        console.log('will receive props');
         const currentPage = this.props.match.params.id;
         const nexPage = nextProps.match.params.id;
 
         if( currentPage !== nexPage){
-            //console.log("currentPage = ", currentPage);
-            //this.props.setCurrentPage(currentPage);
+            this.props.fetchPokemonListRequest(nexPage);
         }
     }
 
-    selectPeriodHandler = (e) => {
-        //this.props.selectOffset(e.target.name);
-    }
     getPokemons = () => {
     
         const currentPage = this.props.match.params.id;
-        console.log('id = ', currentPage);
-        console.log(this.props.fetchPokemonListRequest);
         this.props.fetchPokemonListRequest(currentPage);
+    }
+
+    handlePageClick = (a) => {
+        let page = a.selected + 1 || 1;
+        //this.props.history.push(`/page/${page}`);
     }
 
     render(){
      
-        console.log(this.props);
-
+        console.log("============================");
         console.log("APP RENDER");
         const isFetching = this.props.isFetchingPokemonList || this.props.isFetchingPokemonData;
 
@@ -86,14 +67,27 @@ export class App extends PureComponent{
 
         return(
             <div className="app">
+
                 <div>
-                    <button onClick={this.getPokemons}>Получить список покемонов</button>
+                    { isFetching ? 
+                        <Loader size="70px" gap={4} color="green" /> 
+                        :
+                        <div>
+                            <PokemonTable pokemons={pokemons} />
+                            <PstrNav page={this.props.match.params.id} />
+                            <ReactPaginate
+                                hrefBuilder={i=>`/page/${i}`}
+                                pageCount={41}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                initialPage={1}
+                                forcePage={this.props.match.params.id}
+                                onPageChange={this.handlePageClick}
+                            />
+                        </div>
+                    }
                 </div>
-                <div>
-                    { isFetching && <Loader size="70px" gap={4} color="green" /> }
-                </div>
-                <div>{pokemons.length ? <Table pokemons={pokemons}/> : null}</div>
-                <PstrNav page={this.props.match.params.id}/>
+
            </div>
                 
        
